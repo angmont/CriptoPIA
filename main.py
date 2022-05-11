@@ -10,7 +10,7 @@ if __name__ == "__main__":
         c = ''
         k = '0010010111'
         m = ''
-        with open('imagen.jpg', "rb") as img_file:
+        with open('minion.jpg', "rb") as img_file:
 	        b64_string = base64.b64encode(img_file.read())
 
         test_str = b64_string.decode('UTF-8')
@@ -23,6 +23,7 @@ if __name__ == "__main__":
             bint = c[:8]
             des = encriptado.desencriptado(bint, k)
             m = m + des
+
         #ko = text_from_bits(m)
         men1 = encriptado.text_from_bits(m)
         with open("img_desencriptada.bin", 'w') as img:
@@ -86,8 +87,22 @@ if __name__ == "__main__":
         difference = first_set.symmetric_difference(second_set)
 
         print(difference)
-        if men == m:
+        if m == men:
             print('igual')
         else:
             print('error')			
+ 
+        #ko = text_from_bits(m)
+        men1 = encriptado.text_from_bits(m)
+        with open("img_desencriptada.bin", 'w') as img:
+            img.write(men1.decode('UTF-8'))
+            img.close()
+
+        file = open('img_desencriptada.bin', 'rb')
+        byte = file.read()
+        file.close()
+
+        decodeit = open('img_desencriptada.jpg', 'wb')
+        decodeit.write(base64.b64decode((byte)))
+        decodeit.close()       
 '''
