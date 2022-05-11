@@ -24,8 +24,9 @@ if __name__ == "__main__":
             des = encriptado.desencriptado(bint, k)
             m = m + des
         #ko = text_from_bits(m)
+        men1 = encriptado.text_from_bits(m)
         with open("img_desencriptada.bin", 'w') as img:
-            img.write(men)
+            img.write(men1.decode('UTF-8'))
             img.close()
 
         file = open('img_desencriptada.bin', 'rb')
