@@ -102,22 +102,31 @@ def sbox(a, b):
 
 def llaves(llave):
     perm1 = p10(llave)
+    print('p10: ', perm1)
     mit1 = mitad(perm1)
     jun1 = ls1(mit1[0]) + ls1(mit1[1])
+    print('ls1: ', jun1)
     mit2 = mitad(jun1)
     jun2 = ls2(mit2[0]) + ls2(mit2[1])
+    print('ls2: ', jun2)
     k1 = p8(jun1)
+    print('k1: ', k1)
     k2 = p8(jun2)
+    print('k2: ', k2)
     return(k1, k2)
 
 def ronda(m, k):
     m = mitad(m)
     exp = expansion(m[1])
+    print('exp: ', exp)
     xo = xor(exp, k)
+    print('sum: ', xo)
     parti = mitad(xo)
     sboxes = sbox(parti[0], parti[1])
     jun = sboxes[0] + sboxes[1]
+    print('sboxes: ', jun)
     perm = p4(jun)
+    print('p4: ', perm)
     res = xor(perm, m[0])
     lista = res + m[1]
     return lista
@@ -126,8 +135,10 @@ def encriptado(m, k):
     m = string_to_list(m)
     k = llaves(string_to_list(k))
     perm1 = ip(m)
+    print('ip: ', perm1)
     ronda1 = ronda(perm1, k[0])
     sw = switch(ronda1)
+    print('sw: ', sw)
     ronda2 = ronda(sw, k[1])
     c = list_to_string(ipin(ronda2))
 
@@ -144,27 +155,5 @@ def desencriptado(c, k):
 
     return m   
 
-'''
-file = open('Gilmore.txt', 'r')
-men = file.read()
-file.close()
-
-c = ''
-m = ''
-k = '1010101010'
-for i in range(int((len(men))/8)):
-    bits = men[:8]
-    enc = encriptado(bits, k)
-    c = c + enc
-
-for i in range(int((len(c))/8)):
-    bint = c[:8]
-    des = desencriptado(bint, k)
-    m = m + des
-
-if men == m:
-    print('son iguales')
-else:
-    print('no son iguales')
-    print(type(men))
-'''
+m = string_to_list('10101011')
+print(ip(m))
