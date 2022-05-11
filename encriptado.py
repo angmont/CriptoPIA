@@ -143,14 +143,28 @@ def desencriptado(c, k):
     m = list_to_string(ipin(ronda2))
 
     return m   
-''' 
-m = '10100101'
-k = '0010010111'
 
-c = (encriptado(m, k))
-print(c)
-j = (desencriptado(c, k))
-print(j)
-if m == j:
-    print('si')
+'''
+file = open('Gilmore.txt', 'r')
+men = file.read()
+file.close()
+
+c = ''
+m = ''
+k = '1010101010'
+for i in range(int((len(men))/8)):
+    bits = men[:8]
+    enc = encriptado(bits, k)
+    c = c + enc
+
+for i in range(int((len(c))/8)):
+    bint = c[:8]
+    des = desencriptado(bint, k)
+    m = m + des
+
+if men == m:
+    print('son iguales')
+else:
+    print('no son iguales')
+    print(type(men))
 '''

@@ -26,8 +26,11 @@ if __name__ == "__main__":
 
         #ko = text_from_bits(m)
         men1 = encriptado.text_from_bits(m)
+        men2 = encriptado.text_from_bits(men)
+        u = men1.decode('UTF-8')
+        u1 = men1.decode('UTF-8')
         with open("img_desencriptada.bin", 'w') as img:
-            img.write(men1.decode('UTF-8'))
+            img.write(men2.decode('UTF-8'))
             img.close()
 
         file = open('img_desencriptada.bin', 'rb')
@@ -36,17 +39,20 @@ if __name__ == "__main__":
 
         decodeit = open('img_desencriptada.jpg', 'wb')
         decodeit.write(base64.b64decode((byte)))
-        decodeit.close()       
-'''
+        decodeit.close()  
+     
         print('o')
+
         escritura = open("Gilmore.txt", "w")
         for i in range(int((len(c))/8)):
             bint = men[:8]
             escritura.write(bint + '\n')
+            men =  men[8:]
         escritura = open("Gilmore2.txt", "w")
-        for i in range(int((len(c))/8)):
+        for i in range(int((len(c))/2)):
             bint = m[:8]
             escritura.write(bint + '\n')
+            m =  m[8:]
         # reading files
         f1 = open("Gilmore.txt", "r")
         f2 = open("Gilmore2.txt", "r")
@@ -91,7 +97,7 @@ if __name__ == "__main__":
             print('igual')
         else:
             print('error')			
- 
+'''
         #ko = text_from_bits(m)
         men1 = encriptado.text_from_bits(m)
         with open("img_desencriptada.bin", 'w') as img:
