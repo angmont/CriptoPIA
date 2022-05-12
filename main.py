@@ -2,6 +2,26 @@ import encriptado
 import base64
 from PIL import Image
 
+def img_to_bits(path):
+    with open(path, "rb") as lectura:
+        encrip = base64.b64encode(lectura.read())
+    nobytes = encrip.decode('UTF-8')
+    men = encriptado.text_to_bits(nobytes)
+    return men
+
+def bits_to_img(nombre, m):
+    men1 = encriptado.text_from_bits(m)
+    with open(nombre + '.bin', 'w') as img:
+        img.write(men1.decode('UTF-8'))
+        img.close()
+
+    file = open(nombre + '.bin', 'rb')
+    byte = file.read()
+    file.close()
+
+    decodeit = open(nombre +'.jpg', 'wb')
+    decodeit.write(base64.b64decode((byte)))
+    decodeit.close()
 
 if __name__ == "__main__":
 
@@ -10,37 +30,27 @@ if __name__ == "__main__":
         c = ''
         k = '0010010111'
         m = ''
-        with open('minion.jpg', "rb") as img_file:
-	        b64_string = base64.b64encode(img_file.read())
 
-        test_str = b64_string.decode('UTF-8')
-        men = encriptado.text_to_bits(test_str)
+        nom = input('Inserte el nombre de la imagen\n: ')
+        men = img_to_bits(nom)
         ko = men
+        print(ko)
+
         for i in range(int((len(men))/8)):
             bits = ko[:8]
             enc = encriptado.encriptado(bits, k)
             ko = ko[8:]
             c = c + enc
+        '''
         for i in range(int((len(c))/8)):
             bint = c[:8]
             des = encriptado.desencriptado(bint, k)
             c = c[8:]
             m = m + des
-
-        #ko = text_from_bits(m)
-        men1 = encriptado.text_from_bits(m)
-        with open("img_desencriptada.bin", 'w') as img:
-            img.write(men1.decode('UTF-8'))
-            img.close()
-
-        file = open('img_desencriptada.bin', 'rb')
-        byte = file.read()
-        file.close()
-
-        decodeit = open('img_desencriptada.jpg', 'wb')
-        decodeit.write(base64.b64decode((byte)))
-        decodeit.close()  
-'''    
+        '''
+        nombre = 'img_cifrada'
+        bits_to_img(nombre, c)
+        ''' 
         print('o')
 
         escritura = open("Gilmore.txt", "w")

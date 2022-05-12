@@ -21,34 +21,22 @@ def list_to_string(list):
     return string
 
 
-def xor(bin1, bin2):
-    x = 0
-    xxor = []
-    if len(bin1) == len(bin2):
-        y = len(bin1)
-        while x < y:
-            if bin1[x] == 0:
-                if bin2[x] == 0:
-                    xxor.append(0)
-                else:
-                    xxor.append(1)
-            
-            else:
-                if bin2[x] == 1:
-                    xxor.append(0)
-                else:
-                    xxor.append(1)
-            x = x + 1
-    return xxor
+def xor(a, b):
+    a = list_to_string(a)
+    b = list_to_string(b)
+    y = int(a, 2)^int(b,2)
+    x = bin(y)[2:].zfill(len(a))
+    x = string_to_list(x)
+    return x
 
 def ip(inp):
     bits = []
-    for i in  [2, 6, 3, 1, 4, 8, 5, 7]:
+    for i in [2, 6, 3, 1, 4, 8, 5, 7]:
        bits.append(inp[i-1]) 
     return bits
 def ipin(inp):
     bits = []
-    for i in  [4, 1, 3, 5, 7, 2, 8, 6]:
+    for i in [4, 1, 3, 5, 7, 2, 8, 6]:
        bits.append(inp[i-1]) 
     return bits
 def expansion(inp):
@@ -58,13 +46,13 @@ def expansion(inp):
     return bits
 def p10(inp):
     bits = []
-    for i in  [3, 5, 2, 7, 4, 10, 1, 9, 8, 6]:
+    for i in  [2, 4, 6, 8, 10, 1, 3, 5, 7, 9]:
        bits.append(inp[i-1]) 
     return bits
 
 def p8(inp):
     bits = []
-    for i in  [6, 3, 7, 4, 8, 5, 10, 9]:
+    for i in  [1, 2, 3, 5, 6, 7, 9, 10]:
        bits.append(inp[i-1]) 
     return bits
 def p4(inp):
@@ -110,31 +98,22 @@ def sbox(a, b):
 
 def llaves(llave):
     perm1 = p10(llave)
-    print('p10: ', perm1)
     mit1 = mitad(perm1)
     jun1 = ls1(mit1[0]) + ls1(mit1[1])
-    print('ls1: ', jun1)
     mit2 = mitad(jun1)
     jun2 = ls2(mit2[0]) + ls2(mit2[1])
-    print('ls2: ', jun2)
     k1 = p8(jun1)
-    print('k1: ', k1)
     k2 = p8(jun2)
-    print('k2: ', k2)
     return(k1, k2)
 
 def ronda(m, k):
     m = mitad(m)
     exp = expansion(m[1])
-    print('exp: ', exp)
     xo = xor(exp, k)
-    print('sum: ', xo)
     parti = mitad(xo)
     sboxes = sbox(parti[0], parti[1])
     jun = sboxes[0] + sboxes[1]
-    print('sboxes: ', jun)
     perm = p4(jun)
-    print('p4: ', perm)
     res = xor(perm, m[0])
     lista = res + m[1]
     return lista
@@ -143,10 +122,8 @@ def encriptado(m, k):
     m = string_to_list(m)
     k = llaves(string_to_list(k))
     perm1 = ip(m)
-    print('ip: ', perm1)
     ronda1 = ronda(perm1, k[0])
     sw = switch(ronda1)
-    print('sw: ', sw)
     ronda2 = ronda(sw, k[1])
     c = list_to_string(ipin(ronda2))
 
@@ -163,8 +140,10 @@ def desencriptado(c, k):
 
     return m   
 
-m = '00000000'
-k = '1010101010'
+'''
+m = '11101110'
+k = '0101010101'
 c = encriptado(m,k)
 j = encriptado(c,k)
 print(m,c,j)
+'''
