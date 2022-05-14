@@ -1,6 +1,5 @@
 import encriptado
 import base64
-from PIL import Image
 
 def img_to_bits(path):
     with open(path, "rb") as lectura:
@@ -9,116 +8,74 @@ def img_to_bits(path):
     men = encriptado.text_to_bits(nobytes)
     return men
 
-def bits_to_img(nombre, m):
-    men1 = encriptado.text_from_bits(m)
-    with open(nombre + '.bin', 'w') as img:
-        img.write(men1.decode('UTF-8'))
+def img_cif(nombre, c):
+    with open(nombre + '.jpg', "w") as img:
+        img.write(c)
         img.close()
 
-    file = open(nombre + '.bin', 'rb')
-    byte = file.read()
-    file.close()
+def bits_to_img(nombre, m):
+    men1 = encriptado.text_from_bits(m)
+    um = men1.decode('UTF-8')
+    c = base64.b64decode(um)
+    with open(nombre + '.jpg', "wb") as img:
+        img.write(c)
+        img.close()
 
-    decodeit = open(nombre +'.jpg', 'wb')
-    decodeit.write(base64.b64decode((byte)))
-    decodeit.close()
-
+def first_read(nombre):
+    with open(nombre, 'rb') as lectura:
+        cosa = lectura.read()
+    nobytes = cosa.decode('UTF-8', errors="ignore")
+    try:
+        men = encriptado.text_from_bits(nobytes)
+        return True
+    except:
+        return False
+def read_img(nombre):
+    with open(nom, "r") as img:
+        j = img.read()
+        img.close()
+    return j
 if __name__ == "__main__":
 
     dec = input('Cifrado[1]\nDescifrado[2]\n')
+    c = ''
+    k = '0101010101'
+    m = ''
     if dec == '1':
-        c = ''
-        k = '0010010111'
-        m = ''
-
         nom = input('Inserte el nombre de la imagen\n: ')
-        men = img_to_bits(nom)
-        ko = men
-        print(ko)
+        x = first_read(nom)
+        if x == False:
+            men = img_to_bits(nom)
+            ko = men
+            nop = 1
+        else:
+            j = read_img(nom)
+            men = j
+            ko = men
+            nop = 2
 
         for i in range(int((len(men))/8)):
             bits = ko[:8]
             enc = encriptado.encriptado(bits, k)
             ko = ko[8:]
             c = c + enc
-        '''
-        for i in range(int((len(c))/8)):
-            bint = c[:8]
-            des = encriptado.desencriptado(bint, k)
-            c = c[8:]
-            m = m + des
-        '''
-        nombre = 'img_cifrada'
-        bits_to_img(nombre, c)
-        ''' 
-        print('o')
-
-        escritura = open("Gilmore.txt", "w")
-        for i in range(int((len(c))/8)):
-            bint = men[:8]
-            escritura.write(bint + '\n')
-            men =  men[8:]
-        escritura = open("Gilmore2.txt", "w")
-        for i in range(int((len(c))/8)):
-            bint = m[:8]
-            escritura.write(bint + '\n')
-            m =  m[8:]
-        # reading files
-        f1 = open("Gilmore.txt", "r")
-        f2 = open("Gilmore2.txt", "r")
-
-        i = 0
-        x = 0
-        for line1 in f1:
-            i += 1
-            
-            for line2 in f2:
-                
-                # matching line1 from both files
-                if line1 == line2:
-                    # print IDENTICAL if similar
-                    pass	
-                else:
-
-                    print("Line ", i, ":")
-                    # else print that line from both files
-                    print("\tFile 1:", line1, end='')
-                    print("\tFile 2:", line2, end='')
-                    x = x + 1
-                break
-        print ('lineas: ', i)
-        # closing files
-        f1.close()									
-        f2.close()	
-        if x == 0:
-            print('sin diferencias')	
-        print('end')
-        print(len(test_str))	
-        print(len(m))	
-        print(len(men))	
-        print(type(men))
-        print(type(m))	
-        first_set = set(men)
-        second_set = set(m)
-        difference = first_set.symmetric_difference(second_set)
-
-        print(difference)
-        if m == men:
-            print('igual')
+        
+        nom = 'img_cif'
+        if nop == 2:
+            bits_to_img(nom, c)
         else:
-            print('error')			
+            img_cif(nom, c)
+        
+    elif dec == '2':
+        nom = input('Inserte el nombre de la imagen\n: ')
 
-        #ko = text_from_bits(m)
-        men1 = encriptado.text_from_bits(m)
-        with open("img_desencriptada.bin", 'w') as img:
-            img.write(men1.decode('UTF-8'))
-            img.close()
+        j = read_img(nom)
 
-        file = open('img_desencriptada.bin', 'rb')
-        byte = file.read()
-        file.close()
+        for i in range(int((len(j))/8)):
+            bint = j[:8]
+            des = encriptado.desencriptado(bint, k)
+            j = j[8:]
+            m = m + des
+        nomb = 'img_des'
+        bits_to_img(nomb, m)
 
-        decodeit = open('img_desencriptada.jpg', 'wb')
-        decodeit.write(base64.b64decode((byte)))
-        decodeit.close()       
-'''
