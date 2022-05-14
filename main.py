@@ -2,6 +2,7 @@ import encriptado
 import base64
 import os
 
+#De una imagen, regresa su equivalente en bits
 def img_to_bits(path):
     with open(path, "rb") as lectura:
         encrip = base64.b64encode(lectura.read())
@@ -9,11 +10,13 @@ def img_to_bits(path):
     men = encriptado.text_to_bits(nobytes)
     return men
 
+#Escribe en una imagen el encriptado o desencriptado
 def img_cif(nombre, ext, c):
     with open(nombre + ext, "w") as img:
         img.write(c)
         img.close()
 
+#De bits convierte a imagen
 def bits_to_img(nombre, ext, m):
     men1 = encriptado.text_from_bits(m)
     um = men1.decode('UTF-8')
@@ -22,6 +25,7 @@ def bits_to_img(nombre, ext, m):
         img.write(c)
         img.close()
 
+#Lee una imagen y comprueba si en su contenido tiene puros bits
 def first_read(nombre):
     with open(nombre, 'rb') as lectura:
         cosa = lectura.read()
@@ -31,11 +35,14 @@ def first_read(nombre):
         return True
     except:
         return False
+#Lee una imagen
 def read_img(nombre):
     with open(nom, "r") as img:
         j = img.read()
         img.close()
     return j
+
+#Verifica si se ingresó una llave correcta
 def check_the_key(key):
     try:
         prueba = int(key)
@@ -47,6 +54,8 @@ def check_the_key(key):
     except:
         return False
     return j
+
+#Verifica si se ingresó un archivo valido
 def check_the_file(nom):
     try:
         with open (nom, "r") as img:
@@ -133,4 +142,3 @@ if __name__ == "__main__":
         else: 
             print('Adios!')
             break
-

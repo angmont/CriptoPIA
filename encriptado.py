@@ -2,13 +2,16 @@ from bitarray import bitarray
 import numpy as np
 import binascii
 
+#La cadena de bits que tengamos la mandamos y regresa su equivalente en UTF-8
 def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
     bits = bin(int(binascii.hexlify(text.encode(encoding, errors)), 16))[2:]
     return bits.zfill(8 * ((len(bits) + 7) // 8))
 
+#Del texto que tengamos, envia su equivalente en bits
 def text_from_bits(bits):
     return binascii.unhexlify('%x' % int('0b'+bits, 2))
 
+#Si tenemos una string, la convierte en una lista de enteros
 def string_to_list(string):
     bits = []
     inp = list(string)
@@ -16,11 +19,12 @@ def string_to_list(string):
         bits.append(int(i))
     return bits
 
+#Convierte una lista a string
 def list_to_string(list):
     string = ''.join([str(i) for i in list])
     return string
 
-
+#Realiza un xor de 2 cadenas de bits
 def xor(a, b):
     a = list_to_string(a)
     b = list_to_string(b)
@@ -29,56 +33,76 @@ def xor(a, b):
     x = string_to_list(x)
     return x
 
+#Permutacion inicial
 def ip(inp):
     bits = []
     for i in [2, 6, 3, 1, 4, 8, 5, 7]:
        bits.append(inp[i-1]) 
     return bits
+
+#Permutacion inversa
 def ipin(inp):
     bits = []
     for i in [4, 1, 3, 5, 7, 2, 8, 6]:
        bits.append(inp[i-1]) 
     return bits
+
+#Expande 4 bits a 8
 def expansion(inp):
     bits = []
     for i in  [4, 1, 2, 3, 2, 3, 4, 1]:
        bits.append(inp[i-1]) 
     return bits
+
+#Permuta 10 bits
 def p10(inp):
     bits = []
     for i in  [2, 4, 6, 8, 10, 1, 3, 5, 7, 9]:
        bits.append(inp[i-1]) 
     return bits
 
+#De 10 bits, regresa 8
 def p8(inp):
     bits = []
     for i in  [1, 2, 3, 5, 6, 7, 9, 10]:
        bits.append(inp[i-1]) 
     return bits
+
+#Permuta 4 bits
 def p4(inp):
     bits = []
     for i in  [2, 4, 3, 1]:
        bits.append(inp[i-1]) 
     return bits
+
+#Divide una lista a la mitad
 def mitad(lista):
     mitad = int((len(lista))/2)
     m1 = lista[:mitad]
     m2 = lista[mitad:]
     return(m1, m2)
+
+#Invierte la parte izquiera y la derecha de la cadena
 def switch(lista):
     parte = mitad(lista)
     nuevo = parte[1] + parte[0]
     return nuevo
+
+#Gira circularmente a la izquierda
 def ls1(inp):
     bits = []
     for i in  [2, 3, 4, 5, 1]:
        bits.append(inp[i-1]) 
     return bits
+
+#Gira circularmente a la izquierda pero toma 2 bits
 def ls2(inp):
     bits = []
     for i in  [3, 4, 5, 1, 2]:
        bits.append(inp[i-1]) 
     return bits
+
+#Realiza las sboxes
 def sbox(a, b):
     a = list_to_string(a)
     b = list_to_string(b)
@@ -96,6 +120,7 @@ def sbox(a, b):
 
     return (sbox1, sbox2)
 
+#Generacion de llaves
 def llaves(llave):
     perm1 = p10(llave)
     mit1 = mitad(perm1)
@@ -106,6 +131,7 @@ def llaves(llave):
     k2 = p8(jun2)
     return(k1, k2)
 
+#Ronda sdes
 def ronda(m, k):
     m = mitad(m)
     exp = expansion(m[1])
@@ -118,6 +144,7 @@ def ronda(m, k):
     lista = res + m[1]
     return lista
 
+#Encripta
 def encriptado(m, k):
     m = string_to_list(m)
     k = llaves(string_to_list(k))
@@ -129,6 +156,7 @@ def encriptado(m, k):
 
     return c
 
+#Desencripta
 def desencriptado(c, k):
     c = string_to_list(c)
     k = llaves(string_to_list(k))
