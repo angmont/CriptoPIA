@@ -82,7 +82,7 @@ def mitad(lista):
     m2 = lista[mitad:]
     return(m1, m2)
 
-#Invierte la parte izquiera y la derecha de la cadena
+#Invierte la parte izquierda y la derecha de la cadena
 def switch(lista):
     parte = mitad(lista)
     nuevo = parte[1] + parte[0]
