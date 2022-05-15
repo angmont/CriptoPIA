@@ -48,7 +48,12 @@ def check_the_key(key):
         prueba = int(key)
         lon = len(key)
         if lon == 10:
-            return True
+            b = set(key)
+            s = {'0', '1'}
+            if s == b or b == {'0'} or b == {'1'}:
+                return True
+            else :
+                return False
         else:
             return False
     except:
